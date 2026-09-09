@@ -25,7 +25,7 @@ namespace CodeBase.Gameplay.Allies.States
 
         private void Attack()
         {
-            // _allyStateMachine.Enter<AttackState>();
+             _allyStateMachine.Enter<AttackState>();
         }
 
         public void Exit()

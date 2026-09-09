@@ -4,6 +4,7 @@ using System.Linq;
 using CodeBase.Common.Enums;
 using CodeBase.Gameplay.Common.Interfaces;
 using CodeBase.Gameplay.TargetSystem.Interfaces;
+using ModestTree;
 using UnityEngine;
 
 namespace CodeBase.Gameplay.TargetSystem
@@ -17,9 +18,7 @@ namespace CodeBase.Gameplay.TargetSystem
             get => _currentTarget;
             private set
             {
-                if (ReferenceEquals(_currentTarget, value))
-                    return;
-                
+                if (ReferenceEquals(_currentTarget, value)) return;
                 _currentTarget = value;
                 OnTargetChanged?.Invoke();
             }
@@ -45,15 +44,15 @@ namespace CodeBase.Gameplay.TargetSystem
 
         private void RefreshCurrentTarget(IReadOnlyCollection<ITarget> targets)
         {
-            if (targets.Count > 0)
+            if (targets.Count > 0 && (CurrentTarget == null || !CurrentTarget.IsAlive))
             {
                 CurrentTarget = GetNearestEnemy(_attackerPosition.position, targets);
             }
-            else
+
+            if (targets.Count == 0)
             {
                 CurrentTarget = null;
             }
-            
         }
 
         private ITarget GetNearestEnemy(Vector3 attackerPosition, IReadOnlyCollection<ITarget> targets)
