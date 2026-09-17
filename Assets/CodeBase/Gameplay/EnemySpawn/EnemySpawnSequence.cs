@@ -43,8 +43,6 @@ namespace CodeBase.Gameplay.EnemySpawn
                     
                     _count++;
                     _enemyFactory.Create(Vector3.zero, _sequence.EnemyType);
-                    Debug.Log("Enemy spawned");
-                    //Spawn Enemy
                 }
 
                 return -1f;

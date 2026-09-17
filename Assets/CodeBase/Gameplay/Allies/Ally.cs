@@ -32,7 +32,6 @@ namespace CodeBase.Gameplay.Allies
         private AllyStateMachine _allyStateMachine;
         private Health _health;
         
-        private ITargetsBuffer _targetsBuffer;
         private ITargetSelector _targetSelector;
         
         public Ally(AllyView allyView, AllyModel allyModel, TickableManager tickableManager, IArrowFactory arrowFactory)
@@ -57,9 +56,8 @@ namespace CodeBase.Gameplay.Allies
         private void InitTargetingSystem()
         {
             ITargetingFilter targetingFilter = new TargetFilter(_allyModel.TeamId);
-            _targetsBuffer = new TargetsBuffer(_allyView.AttackRangeTrigger, targetingFilter);
-            _targetSelector = new TargetSelector(_targetsBuffer, _allyView.transform, _allyModel.TargetAttackType);
-            _targetsBuffer.Initialize();
+            TargetsBuffer targetsBuffer = new TargetsBuffer(_allyView.AttackRangeTrigger, targetingFilter);
+            _targetSelector = new TargetSelector(targetsBuffer, _allyView.transform, _allyModel.TargetAttackType);
             _targetSelector.Initialize();
         }
 
@@ -100,6 +98,7 @@ namespace CodeBase.Gameplay.Allies
             _tickableManager.Remove(this);
             _allyView.OnDestroyHandler -= Destroy;
             _health.OnHealthChanged -= HandleHealthChanged;
+            _targetSelector.Dispose();
         }
     }
 }

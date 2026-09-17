@@ -20,6 +20,11 @@ namespace CodeBase.Gameplay.Tiles
             _tileModel = tileModel;
         }
 
+        public void Initialize()
+        {
+            _tileView.SetController(this);
+        }
+
         public void SetAlly(IAlly ally)
         {
             Ally = ally;

@@ -9,8 +9,9 @@ namespace CodeBase.Gameplay.TargetSystem
     public class TargetsBuffer : ITargetsBuffer
     {
         public event Action<HashSet<ITarget>> OnBufferUpdated;
-        
+
         private readonly TriggerObserver _triggerObserver;
+        
         private readonly ITargetingFilter _targetingFilter;
 
         private readonly HashSet<ITarget> _targets = new();
@@ -26,6 +27,8 @@ namespace CodeBase.Gameplay.TargetSystem
             _triggerObserver.TriggerEnter += OnTriggerEnter;
             _triggerObserver.TriggerExit += OnTriggerExit;
         }
+
+        public void SetEnabled(bool enabled) => _triggerObserver.Collider.enabled = enabled;
 
         private void RemoveTarget(ITarget target)
         {
@@ -59,6 +62,8 @@ namespace CodeBase.Gameplay.TargetSystem
                 RemoveTarget(target.Target);
             }
         }
+        
+        public void Clear() => _targets.Clear();
 
         public void Dispose()
         {

@@ -4,6 +4,8 @@ using CodeBase.Gameplay.Board;
 using CodeBase.Gameplay.Enemies.Configs;
 using CodeBase.Gameplay.EnemySpawn;
 using CodeBase.Gameplay.Tiles.Configs;
+using CodeBase.Gameplay.Tutorials;
+using CodeBase.Gameplay.UI.Factory;
 using UnityEngine;
 using Zenject;
 
@@ -18,10 +20,12 @@ namespace CodeBase.Infrastructure.Installers
         public AllArrowsConfigs AllArrowsConfigs;
         public TileConfig TileConfig;
         public GameScenario GameScenario;
+        public UIWindowsConfig UIWindowsConfig;
+        public AllTutorials AllTutorials;
         
         public override void InstallBindings()
         {
-            Container.BindInstances(allEnemiesConfigs, AllAlliesConfigs, boardGenerationConfig,  AllArrowsConfigs, TileConfig, GameScenario);
+            Container.BindInstances(allEnemiesConfigs, AllAlliesConfigs, boardGenerationConfig,  AllArrowsConfigs, TileConfig, GameScenario, UIWindowsConfig, AllTutorials);
         }
     }
 }

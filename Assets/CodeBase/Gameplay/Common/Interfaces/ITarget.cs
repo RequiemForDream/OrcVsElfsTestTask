@@ -8,5 +8,7 @@ namespace CodeBase.Gameplay.Common.Interfaces
         TeamId Team { get; }
         Vector3 Position { get; }
         Vector3 HitPosition { get; }
+        // bool IsTargeted { get; set; }
+        
     }
 }

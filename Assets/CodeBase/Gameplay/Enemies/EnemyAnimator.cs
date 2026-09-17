@@ -7,7 +7,7 @@ namespace CodeBase.Gameplay.Enemies
 {
     public class EnemyAnimator : MonoBehaviour, IAnimationStateReader
     {
-        private static readonly int Attack = Animator.StringToHash("Attack");
+        private static readonly int Attack = Animator.StringToHash("AttackTrigger");
         private static readonly int Die = Animator.StringToHash("Die");
         private static readonly int IsMoving = Animator.StringToHash("IsMoving");
         
@@ -17,6 +17,7 @@ namespace CodeBase.Gameplay.Enemies
         private readonly int _deathStateHash = Animator.StringToHash("Death");
         
         public Animator Animator;
+        public AnimationEventRelay AnimationEventRelay;
         
         public event Action<AnimatorState> StateEntered;
         public event Action<AnimatorState> StateExited;
@@ -26,7 +27,6 @@ namespace CodeBase.Gameplay.Enemies
         public void Move(float speed)
         {
             Animator.SetBool(IsMoving, true);
-            // Animator.SetFloat(Speed, speed);
         }
         
         public void StopMoving() => Animator.SetBool(IsMoving, false);

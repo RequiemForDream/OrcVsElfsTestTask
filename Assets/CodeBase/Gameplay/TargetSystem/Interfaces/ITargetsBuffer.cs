@@ -8,5 +8,7 @@ namespace CodeBase.Gameplay.TargetSystem.Interfaces
     {
         event Action<HashSet<ITarget>> OnBufferUpdated;
         void Initialize();
+        void SetEnabled(bool enabled);
+        void Clear();
     }
 }

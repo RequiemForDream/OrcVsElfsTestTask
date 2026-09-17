@@ -1,6 +1,7 @@
 ﻿using System;
 using CodeBase.Gameplay.Common;
 using CodeBase.Gameplay.Common.Animations;
+using CodeBase.Gameplay.Enemies;
 using UnityEngine;
 
 namespace CodeBase.Gameplay.Allies
@@ -15,6 +16,7 @@ namespace CodeBase.Gameplay.Allies
         private readonly int _deathStateHash = Animator.StringToHash("Death");
         
         public Animator Animator;
+        public AnimationEventRelay AnimationEventRelay;
         
         public AnimatorState State { get; private set; }
         

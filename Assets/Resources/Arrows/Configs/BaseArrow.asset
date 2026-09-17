@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CodeBase.Gameplay.Arrows.Config.ArrowConfig
   ArrowView: {fileID: 4743135205677243514, guid: 0be81345a9c0a1e4ca62ff49dc83714e, type: 3}
   ArrowModel:
-    Speed: 1.2
+    Speed: 1.7
     ArcHeight: 2

@@ -19,7 +19,7 @@ namespace CodeBase.Gameplay.Enemies.States
         public void Enter()
         {
             _enemyView.transform.position = _enemyMarchPath.PathList[0];       
-            _enemyStateMachine.Enter<MarchingState>();
+            _enemyStateMachine.Enter<MoveAlongPathState>();
         }
 
         public void Exit()

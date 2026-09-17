@@ -16,6 +16,10 @@ namespace CodeBase.Gameplay.EnemySpawn
             _enemyFactory = enemyFactory;
             _tickableManager = tickableManager;
             _gameScenario = gameScenario;
+        }
+
+        public void StartScenario()
+        {
             _activeScenario = _gameScenario.Begin(_enemyFactory);
             _tickableManager.Add(this);
         }

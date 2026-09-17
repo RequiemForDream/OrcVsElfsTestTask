@@ -1,4 +1,5 @@
-﻿using CodeBase.Gameplay.TargetSystem.Interfaces;
+﻿using CodeBase.Gameplay.Common.Interfaces;
+using CodeBase.Gameplay.TargetSystem.Interfaces;
 using CodeBase.Infrastructure.Common.StateMachine.Interfaces;
 
 namespace CodeBase.Gameplay.Allies.States
@@ -23,9 +24,9 @@ namespace CodeBase.Gameplay.Allies.States
             _targetSelector.OnTargetChanged += Attack;
         }
 
-        private void Attack()
+        private void Attack(ITarget target)
         {
-             _allyStateMachine.Enter<AttackState>();
+            // _allyStateMachine.Enter<AttackState>();
         }
 
         public void Exit()

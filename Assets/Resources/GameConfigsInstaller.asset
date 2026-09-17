@@ -18,3 +18,5 @@ MonoBehaviour:
   AllArrowsConfigs: {fileID: 11400000, guid: 2e33ea6f464a1924db8f17c82435af4b, type: 2}
   TileConfig: {fileID: 11400000, guid: 92c701c797c4f674a973bbef4d46b5be, type: 2}
   GameScenario: {fileID: 11400000, guid: 0bce389d98736684683048358a1a581f, type: 2}
+  UIWindowsConfig: {fileID: 11400000, guid: e1ff705a642505e44b5d1f5af8a36483, type: 2}
+  AllTutorials: {fileID: 11400000, guid: e589b14a824468646aa9f0c19bec450c, type: 2}

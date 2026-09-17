@@ -1,14 +1,18 @@
 ﻿using CodeBase.Gameplay.Allies;
 using CodeBase.Gameplay.Allies.Factory;
+using CodeBase.Gameplay.Allies.Purchase;
 using CodeBase.Gameplay.AllySpawn;
 using CodeBase.Gameplay.Arrows.Factory;
 using CodeBase.Gameplay.Board;
 using CodeBase.Gameplay.Common.Random;
 using CodeBase.Gameplay.Common.Time;
+using CodeBase.Gameplay.Currency;
 using CodeBase.Gameplay.Enemies.Factory;
 using CodeBase.Gameplay.EnemySpawn;
 using CodeBase.Gameplay.Levels;
 using CodeBase.Gameplay.Tiles.Factory;
+using CodeBase.Gameplay.Tutorials;
+using CodeBase.Gameplay.UI.Factory;
 using Zenject;
 
 namespace CodeBase.Infrastructure.Installers
@@ -18,8 +22,8 @@ namespace CodeBase.Infrastructure.Installers
         public override void InstallBindings()
         {
             BindInfrastructureServices();
-            BindFactories();
             BindCommonServices();
+            BindFactories();
             BindGameplayServices();
         }
 
@@ -34,14 +38,19 @@ namespace CodeBase.Infrastructure.Installers
             Container.Bind<IArrowFactory>().To<ArrowFactory>().AsSingle();
             Container.Bind<IAllyFactory>().To<AllyFactory>().AsSingle();
             Container.Bind<IEnemyFactory>().To<EnemyFactory>().AsSingle();
+            Container.Bind<IUIFactory>().To<UIFactory>().AsSingle();
         }
 
         private void BindGameplayServices()
         {
+            Container.BindInterfacesAndSelfTo<TutorialsController>().AsSingle();
+            Container.Bind<ICurrencyCounter>().To<CurrencyCounter>().AsSingle();
+            Container.BindInterfacesAndSelfTo<PriceProvider>().AsSingle();
+            Container.Bind<IAllyPurchaseSystem>().To<AllyPurchaseSystem>().AsSingle();
             Container.Bind<ILevelDataProvider>().To<LevelDataProvider>().AsSingle();
             Container.Bind<IBoardSystem>().To<BoardSystem>().AsSingle();
             Container.Bind<IAllySpawnSystem>().To<AllySpawnSystem>().AsSingle();
-            Container.Bind<IEnemySpawnSystem>().To<EnemySpawnSystem>().AsSingle().NonLazy();
+            Container.Bind<IEnemySpawnSystem>().To<EnemySpawnSystem>().AsSingle();
         }
 
         private void BindCommonServices()
@@ -52,10 +61,10 @@ namespace CodeBase.Infrastructure.Installers
 
         public void Initialize()
         {
+            Container.Resolve<IUIFactory>().CreateMainHud();
+            Container.Resolve<IEnemySpawnSystem>().StartScenario();
             Container.Resolve<IBoardSystem>().Generate();
             Container.Resolve<IAllySpawnSystem>().Spawn(AllyType.Archer);
-            /*Container.Resolve<IEnemyFactory>().Create(Vector3.zero, EnemyType.Orc);
-            Container.Resolve<IEnemyFactory>().Create(Vector3.zero, EnemyType.Orc);*/
         }
     }
 }

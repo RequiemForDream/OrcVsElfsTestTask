@@ -2,6 +2,7 @@
 using CodeBase.Common.Enums;
 using CodeBase.Gameplay.Common.Health;
 using CodeBase.Gameplay.Common.Interfaces;
+using CodeBase.Gameplay.Currency;
 using CodeBase.Gameplay.Enemies.States;
 using CodeBase.Gameplay.TargetSystem;
 using CodeBase.Gameplay.TargetSystem.Interfaces;
@@ -24,15 +25,18 @@ namespace CodeBase.Gameplay.Enemies
         private readonly EnemyView _enemyView;
         private readonly EnemyModel _enemyModel;
         private readonly PathGenerator _enemyWalkPath;
+        private readonly ICurrencyCounter _currencyCounter;
+        
         private EnemyStateMachine _enemyStateMachine;
 
         private Health _health;
-        
-        private ITargetsBuffer _targetsBuffer;
+
         private ITargetSelector _targetSelector;
 
-        public Enemy(EnemyView enemyView, EnemyModel enemyModel, PathGenerator enemyWalkPath)
+        public Enemy(EnemyView enemyView, EnemyModel enemyModel, PathGenerator enemyWalkPath,
+            ICurrencyCounter currencyCounter)
         {
+            _currencyCounter = currencyCounter;
             _enemyWalkPath = enemyWalkPath;
             _enemyModel = enemyModel;
             _enemyView = enemyView;
@@ -42,9 +46,9 @@ namespace CodeBase.Gameplay.Enemies
         {
             _enemyView.OnDestroyHandler += Destroy;
             _enemyView.SetController(this);
-            InitializeStateMachine();
-          //  InitTargetingSystem();
+            InitTargetingSystem();
             InitHealth();
+            InitializeStateMachine();
         }
 
         public void ApplyDamage(float damage)
@@ -63,20 +67,22 @@ namespace CodeBase.Gameplay.Enemies
             _enemyStateMachine = new EnemyStateMachine();
             _enemyStateMachine.AddState(typeof(InitState),
                 new InitState(_enemyView, _enemyWalkPath, _enemyStateMachine));
-            _enemyStateMachine.AddState(typeof(MarchingState),
-                new MarchingState(_enemyWalkPath, _enemyModel, _enemyView, _enemyStateMachine));
-            _enemyStateMachine.AddState(typeof(ChasingState),
-                new ChasingState(_enemyModel, _enemyView, _enemyStateMachine));
+            _enemyStateMachine.AddState(typeof(IdleState), new IdleState(_targetSelector, _enemyStateMachine, _enemyView));
+            _enemyStateMachine.AddState(typeof(MoveAlongPathState),
+                new MoveAlongPathState(_enemyWalkPath, _enemyModel, _enemyView, _enemyStateMachine));
+            _enemyStateMachine.AddState(typeof(MoveToTargetState),
+                new MoveToTargetState(_enemyModel, _enemyView, _enemyStateMachine));
             _enemyStateMachine.AddState(typeof(DeathState), new DeathState(_enemyView, _enemyModel));
+            _enemyStateMachine.AddState(typeof(AttackState), new AttackState(_enemyView, _enemyModel, _enemyStateMachine));
+            _enemyStateMachine.AddState(typeof(MoveToTargetState), new MoveToTargetState(_enemyModel, _enemyView, _enemyStateMachine));
             _enemyStateMachine.Enter<InitState>();
         }
         
         private void InitTargetingSystem()
         {
             ITargetingFilter targetingFilter = new TargetFilter(_enemyModel.TeamId);
-            _targetsBuffer = new TargetsBuffer(_enemyView.AttackRangeTrigger, targetingFilter);
-            _targetSelector = new TargetSelector(_targetsBuffer, _enemyView.transform, _enemyModel.TargetAttackType);
-            _targetsBuffer.Initialize();
+            ITargetsBuffer targetsBuffer = new TargetsBuffer(_enemyView.AttackRangeTrigger, targetingFilter);
+            _targetSelector = new TargetSelector(targetsBuffer, _enemyView.transform, _enemyModel.TargetAttackType);
             _targetSelector.Initialize();
         }
 
@@ -87,6 +93,7 @@ namespace CodeBase.Gameplay.Enemies
                 IsAlive = false;
                 OnDie?.Invoke(this);
                 _enemyStateMachine.Enter<DeathState>();
+                _currencyCounter.Add(_enemyModel.Reward);
             }
         }
 
@@ -99,6 +106,14 @@ namespace CodeBase.Gameplay.Enemies
         {
             _health.OnHealthChanged -= HandleHealthChanged;
             _enemyView.OnDestroyHandler -= Destroy;
+            _targetSelector.Dispose();
+        }
+
+        public bool IsActiveInHierarchy => _enemyView.gameObject.activeInHierarchy;
+
+        public void SetActive(bool value)
+        {
+            _enemyView.gameObject.SetActive(value);
         }
     }
 }

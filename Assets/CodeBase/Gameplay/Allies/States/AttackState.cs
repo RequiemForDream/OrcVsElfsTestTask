@@ -1,13 +1,13 @@
 ﻿using CodeBase.Gameplay.Arrows;
 using CodeBase.Gameplay.Arrows.Factory;
-using CodeBase.Gameplay.Common;
 using CodeBase.Gameplay.Common.Animations;
 using CodeBase.Gameplay.Common.Interfaces;
-using CodeBase.Gameplay.TargetSystem;
 using CodeBase.Gameplay.TargetSystem.Interfaces;
 using CodeBase.Infrastructure.Common.StateMachine.Interfaces;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using EventType = CodeBase.Gameplay.Common.Animations.EventType;
+
 
 namespace CodeBase.Gameplay.Allies.States
 {
@@ -31,19 +31,22 @@ namespace CodeBase.Gameplay.Allies.States
         public void Enter()
         {
             _allyView.AllyAnimator.StateExited += OnAttackExit;
-            Attack();
+            _allyView.AllyAnimator.AnimationEventRelay.OnAnimationEventInvoke += SpawnArrow;
+            _allyView.AllyAnimator.PlayAttack();
         }
 
-        private void Attack()
+        private void SpawnArrow(EventType eventType)
         {
-            _allyView.AllyAnimator.PlayAttack();
-            ITarget target = _targetSelector.CurrentTarget;
-            Arrow arrow = _arrowFactory.Create(_allyView.transform.position, _allyModel.ArrowType);
-            arrow.Release(target);
-            arrow.OnHit += () =>
+            if (eventType == EventType.OnElfAttack)
             {
-                target.ApplyDamage(_allyModel.Damage);
-            };
+                ITarget target = _targetSelector.CurrentTarget;
+                Arrow arrow = _arrowFactory.Create(_allyView.ArrowSpawnPoint.position, _allyModel.ArrowType);
+                arrow.Release(target);
+                arrow.OnHit += () =>
+                {
+                    target.ApplyDamage(_allyModel.Damage);
+                };
+            }
         }
 
         private async void OnAttackExit(AnimatorState state)
@@ -53,7 +56,7 @@ namespace CodeBase.Gameplay.Allies.States
                 await UniTask.Delay(300);
                 if (_targetSelector.CurrentTarget != null)
                 {
-                    Attack();
+                    _allyView.AllyAnimator.PlayAttack();
                 }
                 else
                 {
@@ -73,6 +76,7 @@ namespace CodeBase.Gameplay.Allies.States
 
         public void Exit()
         {
+            _allyView.AllyAnimator.AnimationEventRelay.OnAnimationEventInvoke -= SpawnArrow;
             _allyView.AllyAnimator.StateExited -= OnAttackExit;
         }
     }

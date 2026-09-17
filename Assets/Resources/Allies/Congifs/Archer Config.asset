@@ -18,4 +18,4 @@ MonoBehaviour:
     Health: 1
     Damage: 10
     ArrowType: 10
-    TargetAttackType: 0
+    TargetAttackType: 1

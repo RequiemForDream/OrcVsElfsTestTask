@@ -9,7 +9,13 @@ namespace CodeBase.Gameplay.TargetSystem
         public event Action<Collider> TriggerEnter;
         public event Action<Collider> TriggerExit;
         
-    
+        public Collider Collider { get; private set; }
+
+        private void Awake()
+        {
+            Collider = GetComponent<Collider>();
+        }
+
         private void OnTriggerEnter(Collider other) => 
             TriggerEnter?.Invoke(other);
 

@@ -11,7 +11,7 @@ namespace CodeBase.Gameplay.TargetSystem
 {
     public class TargetSelector : ITargetSelector
     {
-        public event Action OnTargetChanged;
+        public event Action<ITarget> OnTargetChanged;
 
         public ITarget CurrentTarget
         {
@@ -20,7 +20,7 @@ namespace CodeBase.Gameplay.TargetSystem
             {
                 if (ReferenceEquals(_currentTarget, value)) return;
                 _currentTarget = value;
-                OnTargetChanged?.Invoke();
+                OnTargetChanged?.Invoke(_currentTarget);
             }
         }
         
@@ -39,11 +39,13 @@ namespace CodeBase.Gameplay.TargetSystem
 
         public void Initialize()
         {
+            _targetsBuffer.Initialize();
             _targetsBuffer.OnBufferUpdated += RefreshCurrentTarget;
         }
 
         private void RefreshCurrentTarget(IReadOnlyCollection<ITarget> targets)
         {
+            // Debug.Log(targets.Count  + "/" + _targetAttackType);
             if (targets.Count > 0 && (CurrentTarget == null || !CurrentTarget.IsAlive))
             {
                 CurrentTarget = GetNearestEnemy(_attackerPosition.position, targets);
@@ -72,7 +74,11 @@ namespace CodeBase.Gameplay.TargetSystem
 
         public void Dispose()
         {
+            _targetsBuffer.Dispose();
             _targetsBuffer.OnBufferUpdated -= RefreshCurrentTarget;
         }
+
+        public void SetTargetCollectionAllowed(bool allow) => _targetsBuffer.SetEnabled(allow);
+        public void ClearBuffer() => _targetsBuffer.Clear();
     }
 }

@@ -1,4 +1,5 @@
-﻿using CodeBase.Gameplay.Enemies.Configs;
+﻿using CodeBase.Gameplay.Currency;
+using CodeBase.Gameplay.Enemies.Configs;
 using CodeBase.Gameplay.Levels;
 using UnityEngine;
 using Zenject;
@@ -10,9 +11,11 @@ namespace CodeBase.Gameplay.Enemies.Factory
         private readonly ILevelDataProvider _levelDataProvider;
         private readonly TickableManager _tickableManager;
         private readonly AllEnemiesConfigs _allEnemiesConfigs;
+        private readonly ICurrencyCounter _currencyCounter;
 
-        public EnemyFactory(ILevelDataProvider levelDataProvider, TickableManager tickableManager, AllEnemiesConfigs allEnemiesConfigs)
+        public EnemyFactory(ILevelDataProvider levelDataProvider, TickableManager tickableManager, AllEnemiesConfigs allEnemiesConfigs, ICurrencyCounter currencyCounter)
         {
+            _currencyCounter = currencyCounter;
             _allEnemiesConfigs = allEnemiesConfigs;
             _tickableManager = tickableManager;
             _levelDataProvider = levelDataProvider;
@@ -23,7 +26,7 @@ namespace CodeBase.Gameplay.Enemies.Factory
             EnemyConfig enemyConfig = _allEnemiesConfigs.Enemies[enemyType];
             EnemyView enemyView = Object.Instantiate(enemyConfig.EnemyView, at, Quaternion.identity);
             
-            Enemy enemy = new Enemy(enemyView, enemyConfig.EnemyModel, _levelDataProvider.EnemyWalkPath);
+            Enemy enemy = new Enemy(enemyView, enemyConfig.EnemyModel, _levelDataProvider.EnemyWalkPath, _currencyCounter);
             
             _tickableManager.Add(enemy);
             enemy.Initialize();

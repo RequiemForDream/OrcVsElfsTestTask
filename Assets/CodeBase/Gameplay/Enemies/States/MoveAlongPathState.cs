@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CodeBase.Gameplay.Enemies.States
 {
-    public class MarchingState : IState, IUpdatableState
+    public class MoveAlongPathState : IState, IUpdatableState
     {
         private readonly PathGenerator _enemyMarchPath;
         private readonly EnemyModel _enemyModel;
@@ -14,7 +14,7 @@ namespace CodeBase.Gameplay.Enemies.States
         private int _pathIndex = 1;
         private Vector3 _nextPoint;
 
-        public MarchingState(PathGenerator enemyMarchPath, EnemyModel enemyModel, EnemyView enemyView, IStateMachine enemyStateMachine)
+        public MoveAlongPathState(PathGenerator enemyMarchPath, EnemyModel enemyModel, EnemyView enemyView, IStateMachine enemyStateMachine)
         {
             _enemyStateMachine = enemyStateMachine;
             _enemyView = enemyView;
@@ -51,13 +51,13 @@ namespace CodeBase.Gameplay.Enemies.States
             transform.position += direction * (_enemyModel.Speed * Time.deltaTime);
 
             float distance = Vector3.Distance(transform.position, _nextPoint);
-            if (distance < _enemyModel.DistanceThreshold)
+            if (distance < _enemyModel.PathDistanceThreshold)
             {
                 _pathIndex++;
                  
                 if (_pathIndex >= _enemyMarchPath.PathList.Count)
                 {
-                    _enemyStateMachine.Enter<ChasingState>();
+                    _enemyStateMachine.Enter<IdleState>();
                     return;
                 }
 
@@ -67,7 +67,7 @@ namespace CodeBase.Gameplay.Enemies.States
 
         public void Exit()
         {
-            _enemyView.EnemyAnimator.StopMoving();
+           _enemyView.EnemyAnimator.StopMoving();
         }
     }
 }

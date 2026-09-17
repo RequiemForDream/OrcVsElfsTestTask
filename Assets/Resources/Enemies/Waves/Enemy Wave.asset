@@ -15,7 +15,4 @@ MonoBehaviour:
   EnemySpawnSequences:
   - EnemyType: 10
     Amount: 3
-    Cooldown: 1.57
-  - EnemyType: 10
-    Amount: 1
-    Cooldown: 1.14
+    Cooldown: 2
