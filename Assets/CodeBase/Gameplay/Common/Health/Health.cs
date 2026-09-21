@@ -4,8 +4,10 @@ namespace CodeBase.Gameplay.Common.Health
 {
     public class Health : IHealth
     {
+        public float CurrentHealth => _health;
+
         public event Action<float> OnHealthChanged;
-        
+
         private readonly float _maxMaxHealth;
         private readonly HealthBar _healthBar;
         private float _health;

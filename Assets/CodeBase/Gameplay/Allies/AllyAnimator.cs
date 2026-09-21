@@ -10,10 +10,12 @@ namespace CodeBase.Gameplay.Allies
     {
         private static readonly int Attack = Animator.StringToHash("Attack");
         private static readonly int Die = Animator.StringToHash("Die");
+        private static readonly int Win = Animator.StringToHash("Win");
         
         private readonly int _idleStateHash = Animator.StringToHash("Idle");
         private readonly int _attackStateHash = Animator.StringToHash("Attack");
         private readonly int _deathStateHash = Animator.StringToHash("Death");
+        private readonly int _victoryStateHash = Animator.StringToHash("Victory");
         
         public Animator Animator;
         public AnimationEventRelay AnimationEventRelay;
@@ -25,6 +27,7 @@ namespace CodeBase.Gameplay.Allies
 
         public void PlayDeath() => Animator.SetTrigger(Die);
         public void PlayAttack() => Animator.SetTrigger(Attack);
+        public void PlayVictory() => Animator.SetTrigger(Win);
 
         public void EnteredState(int stateHash)
         {
@@ -46,6 +49,8 @@ namespace CodeBase.Gameplay.Allies
                 state = AnimatorState.Attack;
             else if (stateHash == _deathStateHash)
                 state = AnimatorState.Died;
+            else if (stateHash == _victoryStateHash)
+                state = AnimatorState.Victory;
             else
                 state = AnimatorState.Unknown;
       

@@ -24,10 +24,17 @@ namespace CodeBase.Gameplay.Enemies.States
         public void Enter(ITarget target)
         {
             _target = target;
+            if (!_target.IsAlive) return;
+            _target.OnDie += StopAttack;
             _enemyView.EnemyAnimator.StopMoving();
             _enemyView.EnemyAnimator.PlayAttack();
             _enemyView.EnemyAnimator.StateExited += Attacked;
             _enemyView.EnemyAnimator.AnimationEventRelay.OnAnimationEventInvoke += ApplyDamageToTarget;
+        }
+
+        private void StopAttack(ITarget obj)
+        {
+            _enemyStateMachine.Enter<IdleState>();
         }
 
         private void ApplyDamageToTarget(EventType eventType)
@@ -57,6 +64,7 @@ namespace CodeBase.Gameplay.Enemies.States
 
         public void Exit()
         {
+            _target.OnDie -= StopAttack;
             _enemyView.EnemyAnimator.StateExited -= Attacked;
             _enemyView.EnemyAnimator.AnimationEventRelay.OnAnimationEventInvoke -= ApplyDamageToTarget;
         }

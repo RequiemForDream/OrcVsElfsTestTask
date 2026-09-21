@@ -8,13 +8,12 @@ namespace CodeBase.Gameplay.AllySpawn
 {
     public class AllySpawnSystem : IAllySpawnSystem
     {
-        public IReadOnlyDictionary<AllyType, IAlly> AlliesDictionary => _alliesDictionary;
+        public IReadOnlyList<IAlly> Allies => _allies;
         
-        private readonly Dictionary<AllyType, IAlly> _alliesDictionary = new(4);
         private readonly IAllyFactory _allyFactory;
         private readonly IBoardSystem _boardSystem;
-        
-        private List<IAlly> _allies = new(4);
+
+        private readonly List<IAlly> _allies = new(4);
 
         public AllySpawnSystem(IAllyFactory allyFactory, IBoardSystem boardSystem)
         {
@@ -30,8 +29,15 @@ namespace CodeBase.Gameplay.AllySpawn
                 ally.SetTile(tile);
                 tile.SetAlly(ally);
                 _allies.Add(ally);
-                // _alliesDictionary.Add(allyType, ally);
             }
+        }
+
+        public void SpawnAtTile(AllyType allyType, ITile tile)
+        {
+            IAlly ally = _allyFactory.Create(tile.TileTransform.position, allyType);
+            ally.SetTile(tile);
+            tile.SetAlly(ally);
+            _allies.Add(ally);
         }
     }
 }

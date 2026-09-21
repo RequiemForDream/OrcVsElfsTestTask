@@ -16,6 +16,7 @@ namespace CodeBase.Gameplay.Tiles.Factory
         {
             TileView tileView = Object.Instantiate(_tileConfig.TileView, at, Quaternion.identity,  parent);
             ITile tile = new Tile(tileView, _tileConfig.TileModel);
+            tile.Initialize();
             return tile;
         }
     }

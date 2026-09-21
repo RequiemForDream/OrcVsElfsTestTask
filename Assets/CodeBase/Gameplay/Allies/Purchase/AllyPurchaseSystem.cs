@@ -22,12 +22,6 @@ namespace CodeBase.Gameplay.Allies.Purchase
             _currencyCounter = currencyCounter;
         }
 
-        public bool CanPurchase(AllyType type)
-        {
-            int price = _priceProvider.GetPrice();
-            return _currencyCounter.CurrentValue >= price;
-        }
-
         public bool TryPurchase(AllyType type)
         {
             if (!CanPurchase(type))
@@ -35,12 +29,16 @@ namespace CodeBase.Gameplay.Allies.Purchase
 
             int price = _priceProvider.GetPrice();
             _currencyCounter.Spend(price); 
-            _priceProvider.UpdatePurchasesCount();
+            _priceProvider.UpdatePrice();
             OnMakePurchase?.Invoke();
             _spawnSystem.Spawn(type);
             return true;
         }
 
-        
+        public bool CanPurchase(AllyType type)
+        {
+            int price = _priceProvider.GetPrice();
+            return _currencyCounter.CurrentValue >= price;
+        }
     }
 }

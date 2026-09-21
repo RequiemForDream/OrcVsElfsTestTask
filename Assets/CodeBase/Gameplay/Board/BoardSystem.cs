@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CodeBase.Gameplay.Common.Random;
 using CodeBase.Gameplay.Tiles;
 using CodeBase.Gameplay.Tiles.Factory;
 using UnityEngine;
@@ -13,9 +14,13 @@ namespace CodeBase.Gameplay.Board
         private readonly List<ITile> _tiles = new(20);
         private readonly ITileFactory _tileFactory;
         private readonly BoardGenerationConfig _boardGenerationConfig;
+        private readonly IRandomService _randomService;
 
-        public BoardSystem(ITileFactory tileFactory, BoardGenerationConfig boardGenerationConfig)
+        private readonly List<int> _startPositionsToSpawn = new List<int>{6, 17};
+
+        public BoardSystem(ITileFactory tileFactory, BoardGenerationConfig boardGenerationConfig, IRandomService randomService)
         {
+            _randomService = randomService;
             _boardGenerationConfig = boardGenerationConfig;
             _tileFactory = tileFactory;
         }
@@ -37,8 +42,22 @@ namespace CodeBase.Gameplay.Board
 
         public bool HasFreeTile(out ITile tile)
         {
-            tile = _tiles.FirstOrDefault(x => !x.IsOccupied);
-            return tile != null;
+            if (_startPositionsToSpawn.Count > 0)
+            {
+                tile = _tiles[_startPositionsToSpawn[0]];
+                _startPositionsToSpawn.RemoveAt(0);
+                return true;
+            }
+            List<ITile> freeTiles = _tiles.Where(x => !x.IsOccupied).ToList();
+            
+            if (freeTiles.Count == 0)
+            {
+                tile = null;
+                return false;
+            }
+
+            tile = freeTiles[_randomService.Range(0, freeTiles.Count)];
+            return true;
         }
     }
 }

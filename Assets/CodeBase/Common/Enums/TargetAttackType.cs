@@ -6,5 +6,6 @@
 		Nearest = 1,
 		LowestHp = 2,
 		HighestHp = 3,
+		First = 4,
     }
 }

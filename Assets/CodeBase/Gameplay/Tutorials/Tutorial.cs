@@ -1,4 +1,6 @@
-﻿namespace CodeBase.Gameplay.Tutorials
+﻿using CodeBase.Gameplay.Tutorials.Configs;
+
+namespace CodeBase.Gameplay.Tutorials
 {
     public abstract class Tutorial
     {

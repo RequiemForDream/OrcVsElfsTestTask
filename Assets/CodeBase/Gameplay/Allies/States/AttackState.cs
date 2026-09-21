@@ -4,7 +4,6 @@ using CodeBase.Gameplay.Common.Animations;
 using CodeBase.Gameplay.Common.Interfaces;
 using CodeBase.Gameplay.TargetSystem.Interfaces;
 using CodeBase.Infrastructure.Common.StateMachine.Interfaces;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 using EventType = CodeBase.Gameplay.Common.Animations.EventType;
 
@@ -49,11 +48,10 @@ namespace CodeBase.Gameplay.Allies.States
             }
         }
 
-        private async void OnAttackExit(AnimatorState state)
+        private void OnAttackExit(AnimatorState state)
         {
             if (state == AnimatorState.Attack)
             {
-                await UniTask.Delay(300);
                 if (_targetSelector.CurrentTarget != null)
                 {
                     _allyView.AllyAnimator.PlayAttack();

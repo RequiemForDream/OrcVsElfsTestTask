@@ -8,6 +8,7 @@ namespace CodeBase.Gameplay.Enemies.States
         private readonly EnemyView _enemyView;
         private readonly PathGenerator _enemyMarchPath;
         private readonly IStateMachine _enemyStateMachine;
+        private bool _isInitialized;
 
         public InitState(EnemyView enemyView, PathGenerator enemyMarchPath, IStateMachine enemyStateMachine)
         {
@@ -18,6 +19,13 @@ namespace CodeBase.Gameplay.Enemies.States
         
         public void Enter()
         {
+            if (_isInitialized)
+            {
+                _enemyStateMachine.Enter<MoveAlongPathState>();
+                return;
+            }
+
+            _isInitialized = true;
             _enemyView.transform.position = _enemyMarchPath.PathList[0];       
             _enemyStateMachine.Enter<MoveAlongPathState>();
         }

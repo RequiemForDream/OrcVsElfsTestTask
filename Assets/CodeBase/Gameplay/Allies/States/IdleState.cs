@@ -11,7 +11,8 @@ namespace CodeBase.Gameplay.Allies.States
         private readonly AllyStateMachine _allyStateMachine;
         private readonly ITargetSelector _targetSelector;
 
-        public IdleState(AllyView allyView, AllyModel allyModel, AllyStateMachine allyStateMachine, ITargetSelector targetSelector)
+        public IdleState(AllyView allyView, AllyModel allyModel, AllyStateMachine allyStateMachine,
+            ITargetSelector targetSelector)
         {
             _targetSelector = targetSelector;
             _allyStateMachine = allyStateMachine;
@@ -22,11 +23,16 @@ namespace CodeBase.Gameplay.Allies.States
         public void Enter()
         {
             _targetSelector.OnTargetChanged += Attack;
+
+            if (_targetSelector.CurrentTarget != null)
+            {
+                Attack(_targetSelector.CurrentTarget);
+            }
         }
 
         private void Attack(ITarget target)
         {
-            // _allyStateMachine.Enter<AttackState>();
+            _allyStateMachine.Enter<AttackState>();
         }
 
         public void Exit()

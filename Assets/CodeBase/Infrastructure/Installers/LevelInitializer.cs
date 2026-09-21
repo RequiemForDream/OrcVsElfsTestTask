@@ -22,6 +22,7 @@ namespace CodeBase.Infrastructure.Installers
         public void Initialize()
         {
             _levelDataProvider.SetEnemyWalkPath(EnemyWalkPath);
+            _levelDataProvider.SetMainCamera(MainCamera);
         }
     }
 }

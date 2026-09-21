@@ -15,10 +15,11 @@ MonoBehaviour:
   EnemyView: {fileID: 2174951394942396372, guid: 29b5be50e8e9aa541af34b232445f047, type: 3}
   EnemyModel:
     TeamId: 2
-    Speed: 5
+    Speed: 6
+    Reward: 10
     Health: 20
     TurnSpeed: 10
     PathDistanceThreshold: 0.2
     AttackRange: 2.45
     Damage: 10
-    TargetAttackType: 0
+    TargetAttackType: 1

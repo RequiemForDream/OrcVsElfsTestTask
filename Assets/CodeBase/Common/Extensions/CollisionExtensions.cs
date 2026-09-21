@@ -4,7 +4,7 @@ namespace CodeBase.Common.Extensions
 {
   public enum CollisionLayer
   {
-    
+    Tile = 8,
   }
   
   public static class CollisionExtensions

@@ -11,6 +11,8 @@ namespace CodeBase.Infrastructure.Common.StateMachine
         private IUpdatableState _updatableState;
         private IPhysicsUpdatableState _physicsUpdatableState;
         
+        public Type ActiveStateType => _activeState?.GetType();
+        
         public void Enter<TState>() where TState : class, IState
         {
             IState state = ChangeState<TState>();
@@ -21,6 +23,14 @@ namespace CodeBase.Infrastructure.Common.StateMachine
         {
             TState state = ChangeState<TState>();
             state.Enter(payload);
+        }
+        
+        public void Enter(Type stateType)
+        {
+            IExitableState state = ChangeState(stateType);
+
+            if (state is IState simpleState)
+                simpleState.Enter();
         }
 
         public void AddState(Type type, IExitableState state)
@@ -44,6 +54,18 @@ namespace CodeBase.Infrastructure.Common.StateMachine
             _activeState?.Exit();
 
             TState state = GetState<TState>();
+            _updatableState = state as IUpdatableState;
+            _physicsUpdatableState = state as IPhysicsUpdatableState;
+            _activeState = state;
+
+            return state;
+        }
+        
+        private IExitableState ChangeState(Type type)
+        {
+            _activeState?.Exit();
+
+            IExitableState state = _states[type];
             _updatableState = state as IUpdatableState;
             _physicsUpdatableState = state as IPhysicsUpdatableState;
             _activeState = state;

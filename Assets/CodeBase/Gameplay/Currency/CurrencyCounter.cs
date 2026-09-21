@@ -5,7 +5,7 @@ namespace CodeBase.Gameplay.Currency
 {
     public class CurrencyCounter : ICurrencyCounter
     {
-        public event Action<int> OnChange;
+        public event Action<int> OnValueChanged;
 
         public int CurrentValue
         {
@@ -15,11 +15,11 @@ namespace CodeBase.Gameplay.Currency
         
         private int _currency;
         
-        private readonly ITutorialsController _tutorialsController;
+        private readonly ITutorialsService _tutorialsService;
 
-        public CurrencyCounter(ITutorialsController tutorialsController)
+        public CurrencyCounter(ITutorialsService tutorialsService)
         {
-            _tutorialsController = tutorialsController;
+            _tutorialsService = tutorialsService;
         }
         
         public void Add(int value)
@@ -27,16 +27,16 @@ namespace CodeBase.Gameplay.Currency
             CurrentValue += value;
             if (CurrentValue >= 10)
             {
-                _tutorialsController.ShowTutorialByType(TutorialType.BuyTutorial);
+                _tutorialsService.ShowTutorialByType(TutorialType.BuyAllyTutorial);
             }
             
-            OnChange?.Invoke(CurrentValue);
+            OnValueChanged?.Invoke(CurrentValue);
         }
 
         public void Spend(int value)
         {
             CurrentValue -= value;
-            OnChange?.Invoke(CurrentValue);
+            OnValueChanged?.Invoke(CurrentValue);
         }
     }
 }

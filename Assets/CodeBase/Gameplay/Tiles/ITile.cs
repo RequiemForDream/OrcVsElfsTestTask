@@ -9,5 +9,7 @@ namespace CodeBase.Gameplay.Tiles
         public IAlly Ally { get; }
         public Transform TileTransform { get; }
         void SetAlly(IAlly ally);
+        void Deoccupy();
+        void Initialize();
     }
 }

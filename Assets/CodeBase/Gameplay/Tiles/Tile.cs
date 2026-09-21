@@ -30,5 +30,11 @@ namespace CodeBase.Gameplay.Tiles
             Ally = ally;
             _tileView.SetMaterial(_tileModel.CellOccupied);
         }
+
+        public void Deoccupy()
+        {
+            Ally = null;
+            _tileView.SetMaterial(_tileModel.CellFree);
+        }
     }
 }

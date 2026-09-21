@@ -10,6 +10,8 @@ using CodeBase.Gameplay.Currency;
 using CodeBase.Gameplay.Enemies.Factory;
 using CodeBase.Gameplay.EnemySpawn;
 using CodeBase.Gameplay.Levels;
+using CodeBase.Gameplay.Merge;
+using CodeBase.Gameplay.Pause;
 using CodeBase.Gameplay.Tiles.Factory;
 using CodeBase.Gameplay.Tutorials;
 using CodeBase.Gameplay.UI.Factory;
@@ -43,7 +45,9 @@ namespace CodeBase.Infrastructure.Installers
 
         private void BindGameplayServices()
         {
-            Container.BindInterfacesAndSelfTo<TutorialsController>().AsSingle();
+            Container.Bind<IPauseService>().To<PauseService>().AsSingle();
+            Container.Bind<IMergeService>().To<MergeService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<TutorialsService>().AsSingle();
             Container.Bind<ICurrencyCounter>().To<CurrencyCounter>().AsSingle();
             Container.BindInterfacesAndSelfTo<PriceProvider>().AsSingle();
             Container.Bind<IAllyPurchaseSystem>().To<AllyPurchaseSystem>().AsSingle();
@@ -62,9 +66,9 @@ namespace CodeBase.Infrastructure.Installers
         public void Initialize()
         {
             Container.Resolve<IUIFactory>().CreateMainHud();
-            Container.Resolve<IEnemySpawnSystem>().StartScenario();
             Container.Resolve<IBoardSystem>().Generate();
             Container.Resolve<IAllySpawnSystem>().Spawn(AllyType.Archer);
+            Container.Resolve<IEnemySpawnSystem>().StartScenario();
         }
     }
 }

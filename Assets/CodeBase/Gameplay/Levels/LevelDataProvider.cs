@@ -5,17 +5,12 @@ namespace CodeBase.Gameplay.Levels
 {
     public class LevelDataProvider : ILevelDataProvider
     {
+        public Camera MainCamera { get; private set; }
         public Vector3 StartPoint { get; private set; }
         public PathGenerator EnemyWalkPath { get; private set; }
-        
-        public void SetStartPoint(Vector3 startPoint)
-        {
-           StartPoint = startPoint;
-        }
 
-        public void SetEnemyWalkPath(PathGenerator enemyWalkPath)
-        {
-            EnemyWalkPath = enemyWalkPath;
-        }
+        public void SetStartPoint(Vector3 startPoint) => StartPoint = startPoint;
+        public void SetEnemyWalkPath(PathGenerator enemyWalkPath) => EnemyWalkPath = enemyWalkPath;
+        public void SetMainCamera(Camera mainCamera) => MainCamera = mainCamera;
     }
 }

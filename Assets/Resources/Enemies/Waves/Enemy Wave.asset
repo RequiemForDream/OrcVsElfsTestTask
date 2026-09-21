@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CodeBase.Gameplay.EnemySpawn.EnemyWave
   EnemySpawnSequences:
   - EnemyType: 10
-    Amount: 3
-    Cooldown: 2
+    Amount: 16
+    Cooldown: 0.5

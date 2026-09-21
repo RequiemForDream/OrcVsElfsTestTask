@@ -5,6 +5,6 @@ namespace CodeBase.Gameplay.TargetSystem
 {
     public abstract class TargetView : MonoBehaviour
     {
-        public abstract ITarget Target { get; set; }
+        public abstract ITarget Target { get;  }
     }
 }

@@ -24,7 +24,7 @@ namespace CodeBase.Gameplay.Enemies.States
 
         public void Enter()
         {
-            _nextPoint = _enemyMarchPath.PathList[1];
+            _nextPoint = _enemyMarchPath.PathList[_pathIndex];
             _enemyView.EnemyAnimator.Move(_enemyModel.Speed);
         }
 
@@ -67,7 +67,7 @@ namespace CodeBase.Gameplay.Enemies.States
 
         public void Exit()
         {
-           _enemyView.EnemyAnimator.StopMoving();
+            
         }
     }
 }

@@ -3,7 +3,7 @@
     public enum TutorialType
     {
         Unknown = 0,
-        BuyTutorial = 10,
+        BuyAllyTutorial = 10,
         MergeTutorial = 20,
     }
 }

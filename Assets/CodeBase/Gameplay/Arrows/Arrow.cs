@@ -83,7 +83,7 @@ namespace CodeBase.Gameplay.Arrows
             }
         }
 
-        public event Action OnDestroy;
+        public event Action OnDestroyHandler;
 
         public void Destroy()
         {

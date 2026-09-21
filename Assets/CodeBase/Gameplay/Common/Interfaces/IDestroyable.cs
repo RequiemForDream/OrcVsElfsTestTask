@@ -4,7 +4,7 @@ namespace CodeBase.Gameplay.Common.Interfaces
 {
     public interface IDestroyable
     {
-        event Action OnDestroy;
+        event Action OnDestroyHandler;
         void Destroy();
     }
 }

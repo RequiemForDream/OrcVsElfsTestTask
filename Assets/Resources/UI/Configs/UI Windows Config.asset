@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50a6c7aae836417bbd7bdbd4542626b1, type: 3}
+  m_Name: UI Windows Config
+  m_EditorClassIdentifier: Assembly-CSharp::CodeBase.Gameplay.UI.Factory.UIWindowsConfig
+  HudCanvas: {fileID: 1381474746954184382, guid: 1e5001c57af99f94ca4db968fbe80c99, type: 3}
+  WindowsCanvas: {fileID: 7365262428080039519, guid: c614150be49701447ad21804f82fccdd, type: 3}
+  Windows:
+    _serializedList:
+    - Key: 10
+      Value: {fileID: 3654202054769371508, guid: 6369f3f839542114a8e435cac3af68b8, type: 3}
+    - Key: 20
+      Value: {fileID: 5286665149709162710, guid: 25ed637f7e576c84a96a0a9b38d28f95, type: 3}

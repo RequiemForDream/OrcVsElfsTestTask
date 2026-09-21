@@ -23,7 +23,7 @@ namespace CodeBase.Gameplay.Currency
 
         public void Initialize()
         {
-            _currencyCounter.OnChange += OnCurrencyChanged;
+            _currencyCounter.OnValueChanged += OnCurrencyChanged;
 
             _displayedValue = _currencyCounter.CurrentValue;
             UpdateText(_displayedValue);
@@ -31,7 +31,7 @@ namespace CodeBase.Gameplay.Currency
 
         private void OnDestroy()
         {
-            _currencyCounter.OnChange -= OnCurrencyChanged;
+            _currencyCounter.OnValueChanged -= OnCurrencyChanged;
             _countTween?.Kill();
         }
 

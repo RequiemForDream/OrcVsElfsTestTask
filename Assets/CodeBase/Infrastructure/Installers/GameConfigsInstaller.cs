@@ -3,8 +3,10 @@ using CodeBase.Gameplay.Arrows.Config;
 using CodeBase.Gameplay.Board;
 using CodeBase.Gameplay.Enemies.Configs;
 using CodeBase.Gameplay.EnemySpawn;
+using CodeBase.Gameplay.Merge;
 using CodeBase.Gameplay.Tiles.Configs;
 using CodeBase.Gameplay.Tutorials;
+using CodeBase.Gameplay.Tutorials.Configs;
 using CodeBase.Gameplay.UI.Factory;
 using UnityEngine;
 using Zenject;
@@ -21,11 +23,13 @@ namespace CodeBase.Infrastructure.Installers
         public TileConfig TileConfig;
         public GameScenario GameScenario;
         public UIWindowsConfig UIWindowsConfig;
-        public AllTutorials AllTutorials;
+        public AllTutorialsConfig allTutorialsConfig;
+        public MergeRulesConfig MergeRulesConfig;
         
         public override void InstallBindings()
         {
-            Container.BindInstances(allEnemiesConfigs, AllAlliesConfigs, boardGenerationConfig,  AllArrowsConfigs, TileConfig, GameScenario, UIWindowsConfig, AllTutorials);
+            Container.BindInstances(allEnemiesConfigs, AllAlliesConfigs, boardGenerationConfig,  AllArrowsConfigs, TileConfig, GameScenario, UIWindowsConfig, allTutorialsConfig, MergeRulesConfig);
+            Container.Bind<IMergeRulesProvider>().FromInstance(MergeRulesConfig).AsSingle();
         }
     }
 }

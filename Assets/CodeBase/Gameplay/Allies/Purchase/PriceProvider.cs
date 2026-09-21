@@ -7,7 +7,7 @@
 
         private int _purchasesCount;
 
-        public void UpdatePurchasesCount() => _purchasesCount++;
+        public void UpdatePrice() => _purchasesCount++;
         
         public int GetPrice() => _startPrice + _priceIncreaseAfterEachPurchase * _purchasesCount;
     }

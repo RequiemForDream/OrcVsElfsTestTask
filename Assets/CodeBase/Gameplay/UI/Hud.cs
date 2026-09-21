@@ -1,4 +1,5 @@
 ﻿using CodeBase.Gameplay.Currency;
+using CodeBase.Gameplay.Tutorials.Buy;
 using UnityEngine;
 
 namespace CodeBase.Gameplay.UI
